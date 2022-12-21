@@ -310,31 +310,31 @@ doMultiFiksel <- local({
 })
 
 
-MultiStraussHard <- local({
+MultiFiksel <- local({
   
-  MultiStraussHard <- function(iradii, hradii, types=NULL) {
+  MultiFiksel <- function(iradii, hradii, types=NULL) {
     ## try new syntax
     newcall <- match.call()
-    newcall[[1]] <- as.name('doMultiStraussHard')
+    newcall[[1]] <- as.name('doMultiFiksel')
     out <- try(eval(newcall, parent.frame()), silent=TRUE)
     if(is.interact(out))
       return(out)
     ## try old syntax
     oldcall <- match.call(function(types=NULL, iradii, hradii) {})
-    oldcall[[1]] <- as.name('doMultiStraussHard')
+    oldcall[[1]] <- as.name('doMultiFiksel')
     out <- try(eval(oldcall, parent.frame()), silent=TRUE)
     if(is.interact(out))
       return(out)
     ## Syntax is wrong: generate error using new syntax rules
     if(missing(hradii)) hradii <- NULL
-    doMultiStraussHard(iradii=iradii, hradii=hradii, types=types)
+    doMultiFiksel(iradii=iradii, hradii=hradii, types=types)
   }
   
   
-  BlankMSHobject <- get("BlankMSHobject",
-                        envir=environment(doMultiStraussHard))
+  BlankFobject <- get("BlankFobject",
+                        envir=environment(doMultiFiksel))
   
-  MultiStraussHard <- intermaker(MultiStraussHard, BlankMSHobject)
+  MultiFiksel <- intermaker(MultiFiksel, BlankFobject)
   
-  MultiStraussHard
+  MultiFiksel
 })
