@@ -1,2 +1,2 @@
 # MultiFiksel
-Multiple Fiksel point process model which can then be fitted to point pattern data
+Multiple Fiksel point process interaction model which can be fitted to point pattern data
