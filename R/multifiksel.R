@@ -1,10 +1,10 @@
 #Multifiksel
 
-doMultiStraussHard <- local({
+doMultiFiksel <- local({
   
   # ........  define potential ......................
   
-  MSHpotential <- function(d, tx, tu, par) {
+  MFpotential <- function(d, tx, tu, par) {
     # arguments:
     # d[i,j] distance between points X[i] and U[j]
     # tx[i]  type (mark) of point X[i]
@@ -87,10 +87,10 @@ doMultiStraussHard <- local({
     if(any(!is.na(iradii))) {
       # some gamma interactions left
       # return modified MultiStraussHard with fewer gamma parameters
-      return(MultiStraussHard(types, iradii, hradii))
+      return(MultiFiksel(types, iradii, hradii))
     } else if(any(!ihc)) {
       # no gamma interactions left, but some active hard cores
-      return(MultiHard(types, hradii))
+      return(MultiFiksel(types, hradii))
     } else return(Poisson())
   }
   
@@ -98,12 +98,12 @@ doMultiStraussHard <- local({
   
   # Set up basic object except for family and parameters
   
-  BlankMSHobject <- 
+  BlankFobject <- 
     list(
-      name     = "Multitype Strauss Hardcore process",
-      creator  = "MultiStraussHard",
+      name     = "Multitype Fiksel process",
+      creator  = "MultiFiksel",
       family   = "pairwise.family", # evaluated later
-      pot      = MSHpotential,
+      pot      = MFpotential,
       par      = list(types=NULL, iradii=NULL, hradii=NULL),  # to be added
       parnames = c("possible types",
                    "interaction distances",
@@ -291,7 +291,7 @@ doMultiStraussHard <- local({
   
   matindex <- function(v) { matrix(c(v, rev(v)), ncol=2, byrow=TRUE) }
   
-  # Finally define MultiStraussHard function
+  # Finally define MultiFiksel function
   doMultiStraussHard <- function(iradii, hradii=NULL, types=NULL) {
     iradii[iradii == 0] <- NA
     if(!is.null(hradii)) hradii[hradii == 0] <- NA
@@ -306,7 +306,7 @@ doMultiStraussHard <- local({
     return(out)
   }
   
-  doMultiStraussHard
+  doMultiFiksel
 })
 
 
