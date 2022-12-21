@@ -319,7 +319,7 @@ MultiFiksel <- local({
     out <- try(eval(newcall, parent.frame()), silent=TRUE)
     if(is.interact(out))
       return(out)
-    ## try old syntax
+    ## try old spatstat syntax
     oldcall <- match.call(function(types=NULL, iradii, hradii) {})
     oldcall[[1]] <- as.name('doMultiFiksel')
     out <- try(eval(oldcall, parent.frame()), silent=TRUE)
@@ -338,3 +338,14 @@ MultiFiksel <- local({
   
   MultiFiksel
 })
+
+
+intermaker <- function(f, blank) {
+  # f is the creator function like 'Fiksel'
+  class(f) <- c("intermaker", class(f))
+  # blank is the prototype interaction object: extract some fields
+  desired <- c("creator", "name", "par", "parnames", "pardesc")
+  avail <- desired[desired %in% names(blank)]
+  attr(f, "b") <- blank[avail]
+  return(f)
+}
