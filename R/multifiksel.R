@@ -127,7 +127,7 @@ doMultiFiksel <- local({
           hradii <- h * mm/(mm+1)
           dimnames(hradii) <- list(types, types)
         }
-        MultiStraussHard(types=types,hradii=hradii,iradii=self$par$iradii)
+        MultiFiksel(types=types,hradii=hradii,iradii=self$par$iradii)
       },
       init     = function(self) {
         types <- self$par$types
@@ -205,7 +205,7 @@ doMultiFiksel <- local({
         gammas[ cbind(index1, index2) ] <- expcoef
         gammas[ cbind(index2, index1) ] <- expcoef
         #
-        return(list(param=list(gammas=gammas),
+        return(list(param=list(gammas = gammas),
                     inames="interaction parameters gamma_ij",
                     printable=dround(gammas)))
       },
