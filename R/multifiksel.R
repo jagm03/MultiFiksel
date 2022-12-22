@@ -28,7 +28,7 @@ doMultiFiksel <- local({
       stop("dummy points and model do not have the same possible levels of marks")
     
     # ensure factor levels are acceptable for column names (etc)
-    lxname <- make.names(lx, unique=TRUE)
+    lxname <- make.names(lx, unique = TRUE)
     
     # list all UNORDERED pairs of types to be counted
     # (the interaction must be symmetric in type, and scored as such)
@@ -39,7 +39,7 @@ doMultiFiksel <- local({
     mark1name <- (lxname[row(r)])[uptri]
     mark2name <- (lxname[col(r)])[uptri]
     vname <- apply(cbind(mark1name,mark2name), 1, paste, collapse="x")
-    vname <- paste("mark", vname, sep="")
+    vname <- paste("mark", vname, sep = "")
     npairs <- length(vname)
     # list all ORDERED pairs of types to be counted
     # (to save writing the same code twice)
@@ -86,7 +86,7 @@ doMultiFiksel <- local({
     iradii[which] <- NA
     if(any(!is.na(iradii))) {
       # some gamma interactions left
-      # return modified MultiStraussHard with fewer gamma parameters
+      # return modified MultiFiksel with fewer gamma parameters
       return(MultiFiksel(types, iradii, hradii))
     } else if(any(!ihc)) {
       # no gamma interactions left, but some active hard cores
@@ -104,7 +104,7 @@ doMultiFiksel <- local({
       creator  = "MultiFiksel",
       family   = "pairwise.family", # evaluated later
       pot      = MFpotential,
-      par      = list(types=NULL, iradii=NULL, hradii=NULL),  # to be added
+      par      = list(types = NULL, iradii = NULL, hradii = NULL),  # to be added
       parnames = c("possible types",
                    "interaction distances",
                    "hardcore distances"),
@@ -119,15 +119,15 @@ doMultiFiksel <- local({
         if(is.null(types)) types <- levels(marks(X))
         if(is.null(hradii)) {
           marx <- marks(X)
-          d <- nndist(X, by=marx)
-          h <- aggregate(d, by=list(from=marx), min)
-          h <- as.matrix(h[, -1, drop=FALSE])
+          d <- nndist(X, by = marx)
+          h <- aggregate(d, by = list(from = marx), min)
+          h <- as.matrix(h[, -1, drop = FALSE])
           m <- table(marx)
           mm <- outer(m, m, pmin)
-          hradii <- h * mm/(mm+1)
+          hradii <- h * mm / (mm + 1)
           dimnames(hradii) <- list(types, types)
         }
-        MultiFiksel(types=types,hradii=hradii,iradii=self$par$iradii)
+        MultiFiksel(types = types, hradii = hradii, iradii = self$par$iradii)
       },
       init     = function(self) {
         types <- self$par$types
@@ -261,11 +261,11 @@ doMultiFiksel <- local({
           #                                              ncol=2, byrow=TRUE) }
           mats <- lapply(as.data.frame(rbind(rowidx, colidx)), matindex)
           inters <- lapply(mats, delMSH,
-                           types=types, iradii=iradii,
-                           hradii=hradii, ihc=ihc)
-          return(inters)           }
+                           types = types, iradii = iradii,
+                           hradii = hradii, ihc = ihc)
+          return(inters)}
       },
-      irange = function(self, coeffs=NA, epsilon=0, ...) {
+      irange = function(self, coeffs = NA, epsilon = 0, ...) {
         r <- self$par$iradii
         h <- self$par$hradii
         ractive <- !is.na(r)
@@ -280,7 +280,7 @@ doMultiFiksel <- local({
         else
           return(max(c(r[ractive],h[hactive])))
       },
-      hardcore = function(self, coeffs=NA, epsilon=0, ...) {
+      hardcore = function(self, coeffs = NA, epsilon = 0, ...) {
         h <- self$par$hradii
         active <- !is.na(h)
         return(max(0, h[active]))
@@ -289,10 +289,10 @@ doMultiFiksel <- local({
     )
   class(BlankMSHobject) <- "interact"
   
-  matindex <- function(v) { matrix(c(v, rev(v)), ncol=2, byrow=TRUE) }
+  matindex <- function(v) { matrix(c(v, rev(v)), ncol = 2, byrow = TRUE) }
   
   # Finally define MultiFiksel function
-  doMultiStraussHard <- function(iradii, hradii=NULL, types=NULL) {
+  doMultiStraussHard <- function(iradii, hradii = NULL, types = NULL) {
     iradii[iradii == 0] <- NA
     if(!is.null(hradii)) hradii[hradii == 0] <- NA
     out <- instantiate.interact(BlankMSHobject,
@@ -330,10 +330,7 @@ MultiFiksel <- local({
     doMultiFiksel(iradii=iradii, hradii=hradii, types=types)
   }
   
-  
-  BlankFobject <- get("BlankFobject",
-                        envir=environment(doMultiFiksel))
-  
+  BlankFobject <- get("BlankFobject", envir = environment(doMultiFiksel))
   MultiFiksel <- intermaker(MultiFiksel, BlankFobject)
   
   MultiFiksel
