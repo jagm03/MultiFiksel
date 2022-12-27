@@ -82,7 +82,7 @@ doMultiFiksel <- local({
   
   # .......... auxiliary functions .................
   
-  delMSH <- function(which, types, iradii, hradii, ihc) {
+  delFik <- function(which, types, iradii, hradii, ihc) {
     iradii[which] <- NA
     if(any(!is.na(iradii))) {
       # some gamma interactions left
@@ -248,7 +248,7 @@ doMultiFiksel <- local({
         #
         if(spatstat.options("project.fast")) {
           # remove ALL naughty terms simultaneously
-          return(delMSH(naughty, types, iradii, hradii, ihc))
+          return(delFik(naughty, types, iradii, hradii, ihc))
         } else {
           # present a list of candidates
           rn <- row(naughty)
@@ -260,7 +260,7 @@ doMultiFiksel <- local({
           #             matindex <- function(v) { matrix(c(v, rev(v)),
           #                                              ncol=2, byrow=TRUE) }
           mats <- lapply(as.data.frame(rbind(rowidx, colidx)), matindex)
-          inters <- lapply(mats, delMSH,
+          inters <- lapply(mats, delFik,
                            types = types, iradii = iradii,
                            hradii = hradii, ihc = ihc)
           return(inters)}
