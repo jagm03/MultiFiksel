@@ -292,7 +292,7 @@ doMultiFiksel <- local({
   matindex <- function(v) { matrix(c(v, rev(v)), ncol = 2, byrow = TRUE) }
   
   # Finally define MultiFiksel function
-  doMultiStraussHard <- function(iradii, hradii = NULL, types = NULL) {
+  doMultiFiksel <- function(iradii, hradii = NULL, types = NULL) {
     iradii[iradii == 0] <- NA
     if(!is.null(hradii)) hradii[hradii == 0] <- NA
     out <- instantiate.interact(BlankMSHobject,
