@@ -117,6 +117,7 @@ doMultiFiksel <- local({
       selfstart = function(X, self) {
         types <- self$par$types
         hradii <- self$par$hradii
+        igammaii <- self$par$igammaii
         if(!is.null(types) && !is.null(hradii)) return(self)
         if(is.null(types)) types <- levels(marks(X))
         if(is.null(hradii)) {
@@ -131,10 +132,11 @@ doMultiFiksel <- local({
         }
         MultiFiksel(types = types, hradii = hradii, iradii = self$par$iradii)
       },
-      init     = function(self) {
+      init = function(self) {
         types <- self$par$types
         iradii <- self$par$iradii
         hradii <- self$par$hradii
+        
         # hradii could be NULL
         if(!is.null(types)) {
           if(!is.null(dim(types)))
