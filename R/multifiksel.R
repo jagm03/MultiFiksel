@@ -4,13 +4,12 @@ doMultiFiksel <- local({
   
   # ........  define potential ......................
   
-  MFpotential <- function(d, tx, tu, par) {
-    # arguments:
-    # d[i,j] distance between points X[i] and U[j]
-    # tx[i]  type (mark) of point X[i]
-    # tu[i]  type (mark) of point U[j]
-    #
-    # get matrices of interaction radii
+  MFpotential <- function(d, #d[i,j] distance between points X[i] and U[j]
+                          tx, tu, # tx[i]  type (mark) of point X[i], tu[i] type (mark) of point U[j]
+                          par #parameters: iradii (R), hradii (hij), 
+                          )
+    {
+    # get matrices of parameters
     r <- par$iradii
     h <- par$hradii
     
