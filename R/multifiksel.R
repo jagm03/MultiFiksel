@@ -10,10 +10,8 @@ doMultiFiksel <- local({
                           )
     {
     # get matrices of parameters
-    R <- par$iradii
+    r <- par$iradii
     h <- par$hradii
-    gamma <- par$igammaii
-    c <- par$icii
     
     # get possible marks and validate
     if(!is.factor(tx) || !is.factor(tu))
@@ -52,7 +50,7 @@ doMultiFiksel <- local({
     ucode <- c(1:npairs, (1:npairs)[different])
     #
     # create numeric array for result
-    z <- array(0, dim=c(dim(d), npairs),
+    z <- array(0, dim = c(dim(d), npairs),
                dimnames=list(character(0), character(0), vname))
     # go....
     if(length(z) > 0) {
@@ -105,13 +103,15 @@ doMultiFiksel <- local({
       creator  = "MultiFiksel",
       family   = "pairwise.family", # evaluated later
       pot      = MFpotential,
-      par      = list(types = NULL, iradii = NULL, hradii = NULL),  # to be added
+      par      = list(types = NULL, iradii = NULL, hradii = NULL, igammaii = NULL),  # to be added
       parnames = c("possible types",
                    "interaction distances",
-                   "hardcore distances"),
+                   "hardcore distances",
+                   "rate parameters"),
       pardesc  = c("vector of possible types",
                    "matrix of interaction distances",
-                   "matrix of hardcore distances"),
+                   "matrix of hardcore distances",
+                   "matrix of rate parameters"),
       hasInf   = TRUE,
       selfstart = function(X, self) {
         types <- self$par$types
