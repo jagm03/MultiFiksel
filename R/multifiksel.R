@@ -6,12 +6,14 @@ doMultiFiksel <- local({
   
   MFpotential <- function(d, #d[i,j] distance between points X[i] and U[j]
                           tx, tu, # tx[i]  type (mark) of point X[i], tu[i] type (mark) of point U[j]
-                          par #parameters: iradii (R), hradii (hij), 
+                          par #parameters: iradii (R), hradii (hij), igammaii (rate), icii (strength)
                           )
     {
     # get matrices of parameters
-    r <- par$iradii
+    R <- par$iradii
     h <- par$hradii
+    gamma <- par$igammaii
+    c <- par$icii
     
     # get possible marks and validate
     if(!is.factor(tx) || !is.factor(tu))
