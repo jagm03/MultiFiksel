@@ -117,7 +117,6 @@ doMultiFiksel <- local({
       selfstart = function(X, self) {
         types <- self$par$types
         hradii <- self$par$hradii
-        igammaii <- self$par$igammaii
         if(!is.null(types) && !is.null(hradii)) return(self)
         if(is.null(types)) types <- levels(marks(X))
         if(is.null(hradii)) {
@@ -130,12 +129,14 @@ doMultiFiksel <- local({
           hradii <- h * mm / (mm + 1)
           dimnames(hradii) <- list(types, types)
         }
-        MultiFiksel(types = types, hradii = hradii, iradii = self$par$iradii)
+        MultiFiksel(types = types, hradii = hradii, 
+                    iradii = self$par$iradii, igammaii = self$par$igammaii)
       },
       init = function(self) {
         types <- self$par$types
         iradii <- self$par$iradii
         hradii <- self$par$hradii
+        igammaii <- self$par$igammaii
         
         # hradii could be NULL
         if(!is.null(types)) {
@@ -153,6 +154,7 @@ doMultiFiksel <- local({
             types <- levels(factor(types, levels=types))
           }
           nt <- length(types)
+          MultiPair.checkmatrix(igammaii, nt, sQuote("igammaii"))
           MultiPair.checkmatrix(iradii, nt, sQuote("iradii"))
           if(!is.null(hradii))
             MultiPair.checkmatrix(hradii, nt, sQuote("hradii"))
