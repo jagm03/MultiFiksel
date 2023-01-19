@@ -57,7 +57,7 @@ doMultiFiksel <- local({
     if(length(z) > 0) {
       # apply the relevant interaction distance to each pair of points
       rxu <- r[ tx, tu ]
-      str <- (d < rxu) * exp(- d * g)  #Crucial change Jonatan
+      str <- (d < rxu) * exp(- d * g)  #Crucial change by Jonatan
       str[is.na(str)] <- FALSE
       # and the relevant hard core distance
       hxu <- h[ tx, tu ]
@@ -190,6 +190,8 @@ doMultiFiksel <- local({
           splat("Hardcore radii:")
           print(signif(hradii, dig))
         } else splat("Hardcore radii: not yet determined")
+        splat("Decay rate parameters:")
+        print(signif(igammaii, dig))
         invisible()
       },
       interpret = function(coeffs, self) {
