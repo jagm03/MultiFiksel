@@ -89,7 +89,7 @@ doMultiFiksel <- local({
       # return modified MultiFiksel with fewer gamma parameters
       return(MultiFiksel(types, iradii, hradii, igammaii))
     } else if(any(!ihc)) {
-      # no gamma interactions left, but some active hard cores
+      # no phi interactions left, but some active hard cores
       return(MultiFiksel(types, hradii, igammaii))
     } else return(Poisson())
   }
@@ -212,7 +212,6 @@ doMultiFiksel <- local({
         expcoef <- exp(coeffs)
         cij[ cbind(index1, index2) ] <- expcoef
         cij[ cbind(index2, index1) ] <- expcoef
-        #
         return(list(param = list(cij = cij),
                     inames = "interaction strength c_ij",
                     printable = dround(cij)))
@@ -279,32 +278,32 @@ doMultiFiksel <- local({
         ractive <- !is.na(r)
         hactive <- !is.na(h)
         if(any(!is.na(coeffs))) {
-          gamma <- (self$interpret)(coeffs, self)$param$gammas
-          gamma[is.na(gamma)] <- 1
-          ractive <- ractive & (abs(log(gamma)) > epsilon)
+          cij <- (self$interpret)(coeffs, self)$param$cij
+          cij[is.na(cij)] <- 1
+          ractive <- ractive & (abs(log(cij)) > epsilon)
         }
         if(!any(c(ractive,hactive)))
           return(0)
         else
-          return(max(c(r[ractive],h[hactive])))
+          return(max(c(r[ractive], h[hactive])))
       },
       hardcore = function(self, coeffs = NA, epsilon = 0, ...) {
         h <- self$par$hradii
         active <- !is.na(h)
         return(max(0, h[active]))
       },
-      version=NULL # to be added
+      version = NULL # to be added
     )
   class(BlankMSHobject) <- "interact"
   
   matindex <- function(v) { matrix(c(v, rev(v)), ncol = 2, byrow = TRUE) }
   
   # Finally define MultiFiksel function
-  doMultiFiksel <- function(iradii, hradii = NULL, types = NULL) {
+  doMultiFiksel <- function(iradii, hradii = NULL, igammaii, types = NULL) {
     iradii[iradii == 0] <- NA
     if(!is.null(hradii)) hradii[hradii == 0] <- NA
-    out <- instantiate.interact(BlankMSHobject,
-                                list(types=types,
+    out <- instantiate.interact(BlankFobject,
+                                list(types = types, igammaii = igammaii,
                                      iradii = iradii, hradii = hradii))
     if(!is.null(types)) {
       dn <- list(types, types)
