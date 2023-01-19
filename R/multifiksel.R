@@ -82,15 +82,15 @@ doMultiFiksel <- local({
   
   # .......... auxiliary functions .................
   
-  delFik <- function(which, types, iradii, hradii, ihc) {
+  delFik <- function(which, types, iradii, hradii, igammaii, ihc) {
     iradii[which] <- NA
     if(any(!is.na(iradii))) {
       # some gamma interactions left
       # return modified MultiFiksel with fewer gamma parameters
-      return(MultiFiksel(types, iradii, hradii))
+      return(MultiFiksel(types, iradii, hradii, igammaii))
     } else if(any(!ihc)) {
       # no gamma interactions left, but some active hard cores
-      return(MultiFiksel(types, hradii))
+      return(MultiFiksel(types, hradii, igammaii))
     } else return(Poisson())
   }
   
@@ -223,16 +223,16 @@ doMultiFiksel <- local({
         # hard core radii r[i,j]
         hradii <- self$par$hradii
         # interaction parameters gamma[i,j]
-        gamma <- (self$interpret)(coeffs, self)$param$gammas
+        cij <- (self$interpret)(coeffs, self)$param$cij
         # Check that we managed to estimate all required parameters
         required <- !is.na(iradii)
-        if(!all(is.finite(gamma[required])))
+        if(!all(is.finite(cij[required])))
           return(FALSE)
         # Check that the model is integrable
         # inactive hard cores ...
         ihc <- (is.na(hradii) | hradii == 0)
         # .. must have gamma <= 1
-        return(all(gamma[required & ihc] <= 1))
+        return(all(cij[required & ihc] <= 1))
       },
       project = function(coeffs, self) {
         # types
@@ -242,14 +242,14 @@ doMultiFiksel <- local({
         # hard core radii r[i,j]
         hradii <- self$par$hradii
         # interaction parameters gamma[i,j]
-        gamma <- (self$interpret)(coeffs, self)$param$gammas
+        cij <- (self$interpret)(coeffs, self)$param$cij
         # required gamma parameters
         required <- !is.na(iradii)
         # active hard cores
         activehard <- !is.na(hradii) & (hradii > 0)
         ihc <- !activehard
         # problems
-        gammavalid <- is.finite(gamma) & (activehard | gamma <= 1)
+        cijvalid <- is.finite(cij) & (activehard | cij <= 1)
         naughty    <- required & !gammavalid
         if(!any(naughty))
           return(NULL)
