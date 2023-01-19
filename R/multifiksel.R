@@ -207,15 +207,15 @@ doMultiFiksel <- local({
         index2 <- (col(r))[uptri]
         npairs <- length(index1)
         # extract canonical parameters; shape them into a matrix
-        gammas <- matrix(, ntypes, ntypes)
-        dimnames(gammas) <- list(typ, typ)
+        cij <- matrix(, ntypes, ntypes)
+        dimnames(cij) <- list(typ, typ)
         expcoef <- exp(coeffs)
-        gammas[ cbind(index1, index2) ] <- expcoef
-        gammas[ cbind(index2, index1) ] <- expcoef
+        cij[ cbind(index1, index2) ] <- expcoef
+        cij[ cbind(index2, index1) ] <- expcoef
         #
-        return(list(param=list(gammas = gammas),
-                    inames="interaction parameters gamma_ij",
-                    printable=dround(gammas)))
+        return(list(param = list(cij = cij),
+                    inames = "interaction strength c_ij",
+                    printable = dround(cij)))
       },
       valid = function(coeffs, self) {
         # interaction radii r[i,j]
