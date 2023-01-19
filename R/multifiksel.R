@@ -319,7 +319,7 @@ doMultiFiksel <- local({
 
 MultiFiksel <- local({
   
-  MultiFiksel <- function(iradii, hradii, types=NULL) {
+  MultiFiksel <- function(iradii, hradii, igammaii, types = NULL) {
     ## try new syntax
     newcall <- match.call()
     newcall[[1]] <- as.name('doMultiFiksel')
@@ -327,14 +327,14 @@ MultiFiksel <- local({
     if(is.interact(out))
       return(out)
     ## try old spatstat syntax
-    oldcall <- match.call(function(types=NULL, iradii, hradii) {})
+    oldcall <- match.call(function(types = NULL, iradii, hradii, igammaii) {})
     oldcall[[1]] <- as.name('doMultiFiksel')
     out <- try(eval(oldcall, parent.frame()), silent=TRUE)
     if(is.interact(out))
       return(out)
     ## Syntax is wrong: generate error using new syntax rules
     if(missing(hradii)) hradii <- NULL
-    doMultiFiksel(iradii=iradii, hradii=hradii, types=types)
+    doMultiFiksel(iradii = iradii, hradii = hradii, igammaii = igammaii, types = types)
   }
   
   BlankFobject <- get("BlankFobject", envir = environment(doMultiFiksel))
