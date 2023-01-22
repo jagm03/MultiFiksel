@@ -175,6 +175,7 @@ doMultiFiksel <- local({
         types <- self$par$types
         iradii <- self$par$iradii
         hradii <- self$par$hradii
+        igammaii <- self$par$igammaii
         nt <- nrow(iradii)
         if(waxlyrical('gory')) {
           splat(nt, "types of points")
@@ -294,7 +295,7 @@ doMultiFiksel <- local({
       },
       version = NULL # to be added
     )
-  class(BlankMSHobject) <- "interact"
+  class(BlankFobject) <- "interact"
   
   matindex <- function(v) { matrix(c(v, rev(v)), ncol = 2, byrow = TRUE) }
   
