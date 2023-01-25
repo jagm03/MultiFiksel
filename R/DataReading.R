@@ -7,3 +7,4 @@ Radii <- matrix(rep(12, 25), 5, 5)
 
 A <- ppm(PP ~ 1, MultiFiksel(iradii = Radii, igammaii = Gamma))
 plot(fitin(A))
+B <- rmhmodel() 
