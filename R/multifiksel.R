@@ -56,8 +56,9 @@ doMultiFiksel <- local({
     # go....
     if(length(z) > 0) {
       # apply the relevant interaction distance to each pair of points
-      rxu <- r[ tx, tu ]
-      str <- (d < rxu) * exp(- d * g)  #Crucial change by Jonatan
+      rxu <- r[tx, tu]
+      gxu <- g[tx, tu]
+      str <- (d < rxu) * exp(- d * gxu)  #Crucial change by Jonatan
       str[is.na(str)] <- FALSE
       # and the relevant hard core distance
       hxu <- h[ tx, tu ]
@@ -232,7 +233,7 @@ doMultiFiksel <- local({
         # inactive hard cores ...
         ihc <- (is.na(hradii) | hradii == 0)
         # .. must have gamma <= 1
-        return(all(cij[required & ihc] <= 1))
+        return(all(is.finite(cij[required & ihc])))
       },
       project = function(coeffs, self) {
         # types
