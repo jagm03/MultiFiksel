@@ -219,9 +219,9 @@ doMultiFiksel <- local({
                     printable = dround(cij)))
       },
       valid = function(coeffs, self) {
-        # interaction radii r[i,j]
+        # interaction radii R[i,j]
         iradii <- self$par$iradii
-        # hard core radii r[i,j]
+        # hard core radii h[i,j]
         hradii <- self$par$hradii
         # interaction parameters gamma[i,j]
         cij <- (self$interpret)(coeffs, self)$param$cij
@@ -242,7 +242,9 @@ doMultiFiksel <- local({
         iradii <- self$par$iradii
         # hard core radii r[i,j]
         hradii <- self$par$hradii
-        # interaction parameters gamma[i,j]
+        # slope parameter
+        igammaii <- self$par$igammaii
+        # interaction parameters c[i,j]
         cij <- (self$interpret)(coeffs, self)$param$cij
         # required gamma parameters
         required <- !is.na(iradii)
@@ -250,14 +252,14 @@ doMultiFiksel <- local({
         activehard <- !is.na(hradii) & (hradii > 0)
         ihc <- !activehard
         # problems
-        cijvalid <- is.finite(cij) & (activehard | cij <= 1)
-        naughty    <- required & !gammavalid
+        cijvalid <- is.finite(cij) & (activehard | is.finite(cij))
+        naughty <- required & !cijvalid
         if(!any(naughty))
           return(NULL)
         #
         if(spatstat.options("project.fast")) {
           # remove ALL naughty terms simultaneously
-          return(delFik(naughty, types, iradii, hradii, ihc))
+          return(delFik(naughty, types, iradii, hradii, igammaii, ihc))
         } else {
           # present a list of candidates
           rn <- row(naughty)
@@ -271,7 +273,7 @@ doMultiFiksel <- local({
           mats <- lapply(as.data.frame(rbind(rowidx, colidx)), matindex)
           inters <- lapply(mats, delFik,
                            types = types, iradii = iradii,
-                           hradii = hradii, ihc = ihc)
+                           hradii = hradii, igammaii = igammaii, ihc = ihc)
           return(inters)}
       },
       irange = function(self, coeffs = NA, epsilon = 0, ...) {
