@@ -233,7 +233,7 @@ doMultiFiksel <- local({
         # inactive hard cores ...
         ihc <- (is.na(hradii) | hradii == 0)
         # .. must have finite gammas
-        return(all(is.finite(cij[required & ihc])))
+        return(all(is.finite(cij[required & (!ihc)])))
       },
       project = function(coeffs, self) {
         # types
