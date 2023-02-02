@@ -5,7 +5,8 @@ plot(PP)
 
 Gamma <- matrix(rep(2, 25), 5, 5)
 Radii <- matrix(rep(12, 25), 5, 5)
+DA <- density.ppp(unmark(PP))
 
-A <- ppm(PP ~ x + y, MultiFiksel(iradii = Radii, igammaii = Gamma))
+A <- ppm(PP ~ DA, MultiFiksel(iradii = Radii, igammaii = Gamma))
 plot(fitin(A))
 plot(A)
